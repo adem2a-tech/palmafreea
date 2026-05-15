@@ -1,8 +1,21 @@
-import { defineConfig } from "vite";
+import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
+
+/** shadcn copie Next.js : "use client" casse les sourcemaps Rollup/Vite 7 en prod (échec build Vercel). */
+function stripUseClientDirective(): Plugin {
+  return {
+    name: "strip-use-client",
+    enforce: "pre",
+    transform(code, id) {
+      if (!/\.(tsx?|jsx?)$/.test(id) || id.includes("node_modules")) return;
+      if (!/^["']use client["'];?\r?\n/.test(code)) return;
+      return { code: code.replace(/^["']use client["'];?\r?\n/, ""), map: null };
+    },
+  };
+}
 
 const rawPort = process.env.PORT;
 
@@ -39,9 +52,12 @@ if (!basePath) {
 export default defineConfig({
   base: basePath,
   plugins: [
+    stripUseClientDirective(),
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
+    ...(process.env.NODE_ENV !== "production"
+      ? [runtimeErrorOverlay()]
+      : []),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
@@ -67,6 +83,8 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    sourcemap: false,
+    chunkSizeWarningLimit: 700,
   },
   server: {
     port,
