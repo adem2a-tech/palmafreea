@@ -1,6 +1,5 @@
 import express, { type Express } from "express";
 import type { IncomingMessage, ServerResponse } from "node:http";
-import path from "node:path";
 import cors from "cors";
 import { pinoHttp } from "pino-http";
 import session from "express-session";
@@ -77,20 +76,6 @@ app.use(
 );
 
 app.use("/api", router);
-
-/** Vercel : SPA + API via une seule fonction Express (pas de outputDirectory statique). */
-if (process.env.VERCEL_ENV) {
-  const staticRoot = path.join(
-    process.cwd(),
-    "artifacts/palma-fa/dist/public",
-  );
-  app.use(express.static(staticRoot));
-  app.get(/^(?!\/api).*/, (_req, res, next) => {
-    res.sendFile(path.join(staticRoot, "index.html"), (err) => {
-      if (err) next(err);
-    });
-  });
-}
 
 app.use(
   (

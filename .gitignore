@@ -2,6 +2,7 @@
 
 # compiled output
 dist
+/public
 
 # bundle Vercel (généré par artifacts/api-server/build.mjs)
 /api/vercel-bundle
