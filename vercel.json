@@ -15,9 +15,9 @@
       "maxDuration": 30
     }
   },
-  "rewrites": [{ "source": "/api/:path*", "destination": "/api" }],
   "routes": [
+    { "src": "/api/(.*)", "dest": "/api" },
     { "handle": "filesystem" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
