@@ -7,7 +7,7 @@
     "dev": "cross-env PORT=5173 BASE_PATH=/ vite --config vite.config.ts --host 0.0.0.0",
     "dev:api": "pnpm --dir ../api-server run dev",
     "dev:stack": "concurrently -n api,site -c blue,magenta \"cross-env PORT=3001 pnpm --dir ../api-server run dev\" \"npm run dev\"",
-    "build": "vite build --config vite.config.ts",
+    "build": "cross-env NODE_ENV=production BASE_PATH=/ PORT=5173 VITE_PALMA_MOCK_API=1 vite build --config vite.config.ts",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
