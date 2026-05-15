@@ -8,7 +8,7 @@ artifacts/api-server
 artifacts/mockup-sandbox
 scripts/debug-vercel-handler.mjs
 dist
-public
+/public
 tmp
 .cache
 .expo
