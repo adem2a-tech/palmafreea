@@ -1,9 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "buildCommand": "pnpm --filter @workspace/api-server run build",
+  "buildCommand": "NODE_ENV=production BASE_PATH=/ PORT=5173 pnpm --filter @workspace/palma-fa run build && NODE_ENV=production VERCEL=1 pnpm --filter @workspace/api-server run build",
+  "outputDirectory": "artifacts/palma-fa/dist/public",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api" }
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "functions": {
     "api/index.mjs": {
