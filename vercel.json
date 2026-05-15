@@ -1,11 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "pnpm install --no-frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile --prod=false",
   "buildCommand": "pnpm --filter @workspace/palma-fa run build",
   "outputDirectory": "artifacts/palma-fa/dist/public",
   "build": {
     "env": {
-      "NODE_ENV": "production",
       "BASE_PATH": "/",
       "PORT": "5173",
       "VITE_PALMA_MOCK_API": "1"
